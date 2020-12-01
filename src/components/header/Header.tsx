@@ -1,7 +1,7 @@
 import { Feather } from "@expo/vector-icons";
 import * as React from "react";
 import { TextInput, View, StyleSheet } from "react-native";
-import { color } from "../constant/color";
+import { color } from "../../constant/color";
 interface Props {
   input: string;
   setInput: (text: string) => void;
@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     borderBottomWidth: 1,
     borderColor: color.darkGrey,
-    paddingHorizontal: 8,
+    paddingHorizontal: 16,
   },
 });
 
