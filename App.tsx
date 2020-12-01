@@ -2,7 +2,6 @@ import * as React from "react";
 import { ActivityIndicator, SafeAreaView, StyleSheet } from "react-native";
 import { SearchHeader } from "./src/components/header";
 import { AppListing } from "./src/components/listing";
-import { Recommendation } from "./src/components/recommendation";
 
 export default function App() {
   const [input, setInput] = React.useState("搜尋");
