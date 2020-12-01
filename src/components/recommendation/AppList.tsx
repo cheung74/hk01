@@ -1,5 +1,5 @@
 import * as React from "react";
-import { ScrollView, View, StyleSheet } from "react-native";
+import { ScrollView, View, StyleSheet, FlatList } from "react-native";
 import AppItem from "./AppItem";
 import { color } from "../../constant/color";
 interface AppListProps {
@@ -7,22 +7,22 @@ interface AppListProps {
 }
 
 const AppList: React.FC<AppListProps> = ({ data }) => {
+  const renderItem = ({ item, i }: any) => (
+    <AppItem
+      image={item["im:image"][2].label}
+      name={item["im:name"].label}
+      label={item["im:contentType"].attributes.label}
+    />
+  );
   return (
     <View style={styles.container}>
-      <ScrollView
+      <FlatList
+        data={data}
+        renderItem={renderItem}
         horizontal={true}
+        keyExtractor={(_, i) => i.toString()}
         showsHorizontalScrollIndicator={false}
-        style={styles.scrollView}
-      >
-        {data.map((item: any, index: number) => (
-          <AppItem
-            key={index}
-            image={item["im:image"][2].label}
-            name={item["im:name"].label}
-            label={item["im:contentType"].attributes.label}
-          />
-        ))}
-      </ScrollView>
+      />
     </View>
   );
 };
@@ -30,11 +30,7 @@ const AppList: React.FC<AppListProps> = ({ data }) => {
 const styles = StyleSheet.create({
   container: {
     height: 150,
-  },
-  scrollView: {
     paddingHorizontal: 8,
-    borderBottomWidth: 1,
-    borderColor: color.darkGrey,
   },
 });
 export default React.memo(AppList);

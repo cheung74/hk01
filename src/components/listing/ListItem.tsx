@@ -27,7 +27,7 @@ const ListItem: React.FC<Props> = ({ image, name, label, ranking, round }) => {
   );
 };
 
-export default ListItem;
+export default React.memo(ListItem);
 
 const styles = StyleSheet.create({
   container: {
@@ -54,6 +54,7 @@ const styles = StyleSheet.create({
   textContainer: {
     justifyContent: "flex-start",
     height: 50,
+    width: 200,
   },
   name: {
     marginVertical: 2,

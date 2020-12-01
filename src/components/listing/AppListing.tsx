@@ -1,15 +1,16 @@
 import * as React from "react";
-import { FlatList, ScrollView, Text } from "react-native";
-
+import { FlatList, Text } from "react-native";
+import { Recommendation } from "../recommendation";
 import ListItem from "./ListItem";
 
 interface Props {
+  list: Array<any>;
   data: Array<any>;
   setPage: (page: number) => void;
   page: number;
 }
 
-const AppListing: React.FC<Props> = ({ data, setPage, page }) => {
+const AppListing: React.FC<Props> = ({ list, setPage, page, data }) => {
   const renderITem = ({ item, index }: any) => (
     <ListItem
       image={item["im:image"][2].label}
@@ -22,10 +23,11 @@ const AppListing: React.FC<Props> = ({ data, setPage, page }) => {
   return (
     <FlatList
       style={{ width: "100%" }}
-      data={data}
+      data={list}
       renderItem={renderITem}
       onEndReached={() => setPage(page + 1)}
       keyExtractor={(_, i) => i.toString()}
+      ListHeaderComponent={() => <Recommendation {...{ data }} />}
     />
   );
 };
