@@ -1,6 +1,11 @@
 import { Feather } from "@expo/vector-icons";
 import * as React from "react";
-import { TextInput, View, StyleSheet } from "react-native";
+import {
+  TextInput,
+  View,
+  StyleSheet,
+  TouchableWithoutFeedback,
+} from "react-native";
 import { color } from "../../constant/color";
 interface Props {
   input: string;
@@ -9,22 +14,31 @@ interface Props {
 
 const SearchHeader: React.FC<Props> = ({ input, setInput }) => {
   const [inActive, setInActive] = React.useState(false);
+  const ref_input = React.useRef<any>(null);
+  React.useEffect(() => {
+    if (inActive) {
+      ref_input.current.focus();
+    }
+  }, [inActive]);
   return (
     <View style={styles.container}>
-      <View style={styles.textContainer}>
-        <Feather name="search" size={16} color={color.textColor} />
-        <TextInput
-          style={[{ fontSize: 16 }, { width: inActive ? "90%" : 30 }]}
-          value={input}
-          onChangeText={(text) => setInput(text)}
-          onFocus={() => {
-            setInActive(true);
-            setInput(input ? input : "");
-          }}
-          onBlur={() => setInActive(false)}
-          placeholder="搜尋"
-        />
-      </View>
+      <TouchableWithoutFeedback onPress={() => setInActive(true)}>
+        <View style={styles.textContainer}>
+          <Feather name="search" size={16} color={color.textColor} />
+          <TextInput
+            ref={ref_input}
+            style={[{ fontSize: 16 }, { width: inActive ? "90%" : 30 }]}
+            value={input}
+            onChangeText={(text) => setInput(text)}
+            onFocus={() => {
+              setInActive(true);
+              setInput(input ? input : "");
+            }}
+            onBlur={() => setInActive(false)}
+            placeholder="搜尋"
+          />
+        </View>
+      </TouchableWithoutFeedback>
     </View>
   );
 };
