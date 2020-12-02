@@ -2,10 +2,8 @@ import * as React from "react";
 import { ActivityIndicator, StyleSheet, View } from "react-native";
 import { SearchHeader } from "./src/components/header";
 import { AppListing } from "./src/components/listing";
-import { useOrientation } from "./src/hooks/useOrientation";
 export default function App() {
   const [input, setInput] = React.useState("");
-  const orientation = useOrientation();
   const [topGrossingAppList, setTopGrossingAppList] = React.useState<any[]>([]);
   const [
     filteredTopGrossingAppList,
@@ -69,6 +67,7 @@ export default function App() {
     }
   }, [page, input]);
 
+  //filter search input 
   React.useEffect(() => {
     if (input) {
       const filteredData = topGrossingAppList.filter(
@@ -92,9 +91,11 @@ export default function App() {
     }
   }, [input]);
 
+  // wait all api responses
   React.useEffect(() => {
     Promise.all([fetchTopFreeAppList(), fetchTopGrossingAppList()]);
   }, []);
+
   return (
     <View style={[styles.container]}>
       {fetchTopFeeAppListStatus && topFreeAppListStatus ? (
