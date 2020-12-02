@@ -17,6 +17,7 @@ const SearchHeader: React.FC<Props> = ({ input, setInput }) => {
           value={input}
           onChangeText={(text) => setInput(text)}
           onFocus={() => setInput("")}
+          placeholder="搜尋"
         />
       </View>
     </View>

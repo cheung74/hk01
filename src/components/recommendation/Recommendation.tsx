@@ -3,14 +3,14 @@ import { StyleSheet, Text, View } from "react-native";
 import AppList from "./AppList";
 import { color } from "../../constant/color";
 interface Props {
-  data: Array<any>;
+  recommendationData: Array<any>;
 }
 
-const Recommendation: React.FC<Props> = ({ data }: Props) => {
+const Recommendation: React.FC<Props> = ({ recommendationData }: Props) => {
   return (
     <View style={styles.container}>
       <Text style={styles.text}>推介</Text>
-      {data && <AppList {...{ data }} />}
+      {recommendationData && <AppList {...{ recommendationData }} />}
     </View>
   );
 };

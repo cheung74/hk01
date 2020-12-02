@@ -1,12 +1,11 @@
 import * as React from "react";
-import { ScrollView, View, StyleSheet, FlatList } from "react-native";
+import { FlatList, StyleSheet, View } from "react-native";
 import AppItem from "./AppItem";
-import { color } from "../../constant/color";
 interface AppListProps {
-  data: Array<any>;
+  recommendationData: Array<any>;
 }
 
-const AppList: React.FC<AppListProps> = ({ data }) => {
+const AppList: React.FC<AppListProps> = ({ recommendationData }) => {
   const renderItem = ({ item, i }: any) => (
     <AppItem
       image={item["im:image"][2].label}
@@ -17,7 +16,7 @@ const AppList: React.FC<AppListProps> = ({ data }) => {
   return (
     <View style={styles.container}>
       <FlatList
-        data={data}
+        data={recommendationData}
         renderItem={renderItem}
         horizontal={true}
         keyExtractor={(_, i) => i.toString()}

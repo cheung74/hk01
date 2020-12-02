@@ -4,13 +4,18 @@ import { Recommendation } from "../recommendation";
 import ListItem from "./ListItem";
 
 interface Props {
-  list: Array<any>;
-  data: Array<any>;
+  topFreeAppList: Array<any>;
+  recommendationData: Array<any>;
   setPage: (page: number) => void;
   page: number;
 }
 
-const AppListing: React.FC<Props> = ({ list, setPage, page, data }) => {
+const AppListing: React.FC<Props> = ({
+  topFreeAppList,
+  setPage,
+  page,
+  recommendationData,
+}) => {
   const renderITem = ({ item, index }: any) => (
     <ListItem
       image={item["im:image"][2].label}
@@ -23,11 +28,11 @@ const AppListing: React.FC<Props> = ({ list, setPage, page, data }) => {
   return (
     <FlatList
       style={{ width: "100%" }}
-      data={list}
+      data={topFreeAppList}
       renderItem={renderITem}
       onEndReached={() => setPage(page + 1)}
       keyExtractor={(_, i) => i.toString()}
-      ListHeaderComponent={() => <Recommendation {...{ data }} />}
+      ListHeaderComponent={() => <Recommendation {...{ recommendationData }} />}
     />
   );
 };
