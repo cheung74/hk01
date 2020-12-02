@@ -1,10 +1,11 @@
+import { AppItem } from "./../../types";
 import { useState, useEffect, useCallback } from "react";
 
 export const useFetchTopFreeAppList = () => {
-  const [filteredTopFreeAppList, setFilteredTopFreeAppList] = useState<any[]>(
-    []
-  );
-  const [wholeTopFreeAppList, setWholeTopFreeAppList] = useState<any[]>([]);
+  const [filteredTopFreeAppList, setFilteredTopFreeAppList] = useState<
+    AppItem[]
+  >([]);
+  const [wholeTopFreeAppList, setWholeTopFreeAppList] = useState<AppItem[]>([]);
 
   const [topFreeAppListStatus, setTopFreeAppListStatus] = useState<
     boolean | null
@@ -17,7 +18,7 @@ export const useFetchTopFreeAppList = () => {
       const {
         feed: { entry },
       } = await req.json();
-      const mergedArr = await Promise.all(
+      const mergedArr: AppItem[] = await Promise.all(
         entry.map(async (item: any) => {
           const appId = item.id.attributes["im:id"];
           const req = await fetch(
@@ -52,8 +53,8 @@ export const useFetchTopFreeAppList = () => {
   }, []);
 
   useEffect(() => {
-    fetchTopFreeAppList();
-  }, []);
+    if (!topFreeAppListStatus) fetchTopFreeAppList();
+  }, [topFreeAppListStatus]);
 
   return {
     filteredTopFreeAppList,

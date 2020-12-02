@@ -2,9 +2,10 @@ import * as React from "react";
 import { ActivityIndicator, StyleSheet, View } from "react-native";
 import { SearchHeader } from "./src/components/header";
 import { AppListing } from "./src/components/listing";
-import _ from "lodash";
+import _, { filter } from "lodash";
 import { useTopGrossingAppList } from "./src/hooks/useTopGrossingAppList";
 import { useFetchTopFreeAppList } from "./src/hooks/useFetchTopFreeAppList";
+import { AppItem } from "./types";
 export default function App() {
   const [input, setInput] = React.useState("");
 
@@ -35,33 +36,27 @@ export default function App() {
     [page, input]
   );
 
-  const filterSearchInput = React.useCallback(
-    _.debounce((input) => {
-      if (input) {
-        const filteredData = topGrossingAppList.filter(
-          (item) =>
-            item["im:name"].label.toLowerCase().includes(input.toLowerCase()) ||
-            item.category.attributes.label
-              .toLowerCase()
-              .includes(input.toLowerCase()) ||
-            item.summary.label.toLowerCase().includes(input.toLowerCase()) ||
-            item["im:artist"].label.toLowerCase().includes(input.toLowerCase())
-        );
-        setFilteredTopGrossingAppList(filteredData);
-        const newFilteredList = wholeTopFreeAppList.filter(
-          (item) =>
-            item.label.toLowerCase().includes(input.toLowerCase()) ||
-            item.summary.toLowerCase().includes(input.toLowerCase()) ||
-            item.author.toLowerCase().includes(input.toLowerCase()) ||
-            item.name.toLowerCase().includes(input.toLowerCase())
-        );
-        setFilteredTopFreeAppList(newFilteredList);
-      } else {
-        setFilteredTopGrossingAppList(topGrossingAppList);
-      }
-    }, 300),
-    []
-  );
+  const filterArr = (arr: AppItem[], text: string) => {
+    return arr.filter(
+      (item) =>
+        item.label.toLowerCase().includes(text) ||
+        item.name.toLowerCase().includes(text) ||
+        item.summary.toLowerCase().includes(text) ||
+        item.author.toLowerCase().includes(text)
+    );
+  };
+  
+  const filterSearchInput = _.debounce((input: string) => {
+    if (input) {
+      const text = input.toLowerCase();
+      const filteredData = filterArr(topGrossingAppList, text);
+      setFilteredTopGrossingAppList(filteredData);
+      const newFilteredList = filterArr(wholeTopFreeAppList, text);
+      setFilteredTopFreeAppList(newFilteredList);
+    } else {
+      setFilteredTopGrossingAppList(topGrossingAppList);
+    }
+  }, 800);
 
   const debounceHandleInput = (input: string) => {
     filterSearchInput(input);
