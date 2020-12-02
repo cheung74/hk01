@@ -18,12 +18,14 @@ const AppListing: React.FC<Props> = ({
 }) => {
   const renderITem = ({ item, index }: any) => (
     <ListItem
-      image={item["im:image"][2].label}
+      image={item.image}
       ranking={(index + 1).toString()}
       round={index % 2 ? true : false}
-      name={item["im:name"].label}
-      label={item["im:contentType"].attributes.label}
-    />
+      name={item.name}
+      label={item.label}
+      averageRating={item.averageRating}
+      ratingCount={item.ratingCount}
+      />
   );
   return (
     <FlatList
