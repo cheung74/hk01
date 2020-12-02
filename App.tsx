@@ -6,6 +6,7 @@ import _, { filter } from "lodash";
 import { useTopGrossingAppList } from "./src/hooks/useTopGrossingAppList";
 import { useFetchTopFreeAppList } from "./src/hooks/useFetchTopFreeAppList";
 import { AppItem } from "./types";
+import { filterArr } from "./src/util/helper";
 export default function App() {
   const [input, setInput] = React.useState("");
 
@@ -36,30 +37,30 @@ export default function App() {
     [page, input]
   );
 
-  const filterArr = (arr: AppItem[], text: string) => {
-    return arr.filter(
-      (item) =>
-        item.label.toLowerCase().includes(text) ||
-        item.name.toLowerCase().includes(text) ||
-        item.summary.toLowerCase().includes(text) ||
-        item.author.toLowerCase().includes(text)
-    );
-  };
-  
-  const filterSearchInput = _.debounce((input: string) => {
-    if (input) {
-      const text = input.toLowerCase();
-      const filteredData = filterArr(topGrossingAppList, text);
-      setFilteredTopGrossingAppList(filteredData);
-      const newFilteredList = filterArr(wholeTopFreeAppList, text);
-      setFilteredTopFreeAppList(newFilteredList);
-    } else {
-      setFilteredTopGrossingAppList(topGrossingAppList);
-    }
-  }, 800);
+  const filterSearchInput = React.useCallback(
+    _.debounce(
+      (
+        input: string,
+        topGrossingAppList: AppItem[],
+        wholeTopFreeAppList: AppItem[]
+      ) => {
+        if (input) {
+          const text = input.toLowerCase();
+          const filteredData = filterArr(topGrossingAppList, text);
+          setFilteredTopGrossingAppList(filteredData);
+          const newFilteredList = filterArr(wholeTopFreeAppList, text);
+          setFilteredTopFreeAppList(newFilteredList);
+        } else {
+          setFilteredTopGrossingAppList(topGrossingAppList);
+        }
+      },
+      800
+    ),
+    []
+  );
 
   const debounceHandleInput = (input: string) => {
-    filterSearchInput(input);
+    filterSearchInput(input, topGrossingAppList, wholeTopFreeAppList);
     setInput(input);
   };
 
