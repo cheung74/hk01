@@ -72,18 +72,22 @@ export default function App() {
     if (input) {
       const filteredData = topGrossingAppList.filter(
         (item) =>
-          item["im:name"].label.includes(input) ||
-          item.category.attributes.label.includes(input) ||
-          item.summary.label.includes(input) ||
-          item["im:artist"].label.includes(input)
+          item["im:name"].label.toLowerCase().includes(input.toLowerCase()) ||
+          item.category.attributes.label
+            .toLowerCase()
+            .includes(input.toLowerCase()) ||
+          item.summary.label.toLowerCase().includes(input.toLowerCase()) ||
+          item["im:artist"].label.toLowerCase().includes(input.toLowerCase())
       );
       setFilteredTopGrossingAppList(filteredData);
       const newFilteredList = wholeTopFreeAppList.filter(
         (item) =>
-          item["im:name"].label.includes(input) ||
-          item.category.attributes.label.includes(input) ||
-          item.summary.label.includes(input) ||
-          item["im:artist"].label.includes(input)
+          item["im:name"].label.toLowerCase().includes(input.toLowerCase()) ||
+          item.category.attributes.label
+            .toLowerCase()
+            .includes(input.toLowerCase()) ||
+          item.summary.label.toLowerCase().includes(input.toLowerCase()) ||
+          item["im:artist"].label.toLowerCase().includes(input.toLowerCase())
       );
       setFilteredTopFreeAppList(newFilteredList);
     } else {
