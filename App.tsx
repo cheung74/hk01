@@ -2,109 +2,73 @@ import * as React from "react";
 import { ActivityIndicator, StyleSheet, View } from "react-native";
 import { SearchHeader } from "./src/components/header";
 import { AppListing } from "./src/components/listing";
+import _, { filter } from "lodash";
+import { useTopGrossingAppList } from "./src/hooks/useTopGrossingAppList";
+import { useFetchTopFreeAppList } from "./src/hooks/useFetchTopFreeAppList";
+import { AppItem } from "./types";
+import { filterArr } from "./src/util/helper";
 export default function App() {
   const [input, setInput] = React.useState("");
-  const [topGrossingAppList, setTopGrossingAppList] = React.useState<any[]>([]);
-  const [
+
+  const {
+    topGrossingAppList,
     filteredTopGrossingAppList,
     setFilteredTopGrossingAppList,
-  ] = React.useState<any[]>([]);
-  const [
     fetchTopFeeAppListStatus,
-    setFetchTopFeeAppListStatus,
-  ] = React.useState<boolean | null>(null);
+  } = useTopGrossingAppList();
 
-  const [filteredTopFreeAppList, setFilteredTopFreeAppList] = React.useState<
-    any[]
-  >([]);
-  const [wholeTopFreeAppList, setWholeTopFreeAppList] = React.useState<any[]>(
+  const {
+    filteredTopFreeAppList,
+    setFilteredTopFreeAppList,
+    wholeTopFreeAppList,
+    topFreeAppListStatus,
+  } = useFetchTopFreeAppList();
+
+  const [page, setPage] = React.useState(1);
+
+  //change lazy loading list item
+  React.useEffect(
+    _.debounce(() => {
+      if (page > 1 && input === "") {
+        const currentList = wholeTopFreeAppList.slice(0, page * 10);
+        setFilteredTopFreeAppList(currentList);
+      }
+    }, 500),
+    [page, input]
+  );
+
+  const filterSearchInput = React.useCallback(
+    _.debounce(
+      (
+        input: string,
+        topGrossingAppList: AppItem[],
+        wholeTopFreeAppList: AppItem[]
+      ) => {
+        if (input) {
+          const text = input.toLowerCase();
+          const filteredData = filterArr(topGrossingAppList, text);
+          setFilteredTopGrossingAppList(filteredData);
+          const newFilteredList = filterArr(wholeTopFreeAppList, text);
+          setFilteredTopFreeAppList(newFilteredList);
+        } else {
+          setFilteredTopGrossingAppList(topGrossingAppList);
+        }
+      },
+      800
+    ),
     []
   );
 
-  const [topFreeAppListStatus, setTopFreeAppListStatus] = React.useState<
-    boolean | null
-  >(null);
-  const [page, setPage] = React.useState(1);
-
-  const fetchTopGrossingAppList = React.useCallback(async () => {
-    try {
-      const req = await fetch(
-        "https://itunes.apple.com/hk/rss/topgrossingapplications/limit=10/json"
-      );
-      const {
-        feed: { entry },
-      } = await req.json();
-      await setTopGrossingAppList(entry);
-      await setFilteredTopGrossingAppList(entry);
-      await setFetchTopFeeAppListStatus(true);
-    } catch (err) {
-      await setFetchTopFeeAppListStatus(false);
-    }
-  }, []);
-
-  const fetchTopFreeAppList = React.useCallback(async () => {
-    try {
-      const req = await fetch(
-        "https://itunes.apple.com/hk/rss/topfreeapplications/limit=100/json"
-      );
-      const {
-        feed: { entry },
-      } = await req.json();
-      const currentShownList = entry.slice(0, 10);
-      await setWholeTopFreeAppList(entry);
-      await setFilteredTopFreeAppList(currentShownList);
-      await setTopFreeAppListStatus(true);
-    } catch (err) {
-      await setTopFreeAppListStatus(false);
-    }
-  }, []);
-
-  //change lazy loading list item
-  React.useEffect(() => {
-    if (page > 1 && input === "") {
-      const currentList = wholeTopFreeAppList.slice(0, page * 10);
-      setFilteredTopFreeAppList(currentList);
-    }
-  }, [page, input]);
-
-  //filter search input 
-  React.useEffect(() => {
-    if (input) {
-      const filteredData = topGrossingAppList.filter(
-        (item) =>
-          item["im:name"].label.toLowerCase().includes(input.toLowerCase()) ||
-          item.category.attributes.label
-            .toLowerCase()
-            .includes(input.toLowerCase()) ||
-          item.summary.label.toLowerCase().includes(input.toLowerCase()) ||
-          item["im:artist"].label.toLowerCase().includes(input.toLowerCase())
-      );
-      setFilteredTopGrossingAppList(filteredData);
-      const newFilteredList = wholeTopFreeAppList.filter(
-        (item) =>
-          item["im:name"].label.toLowerCase().includes(input.toLowerCase()) ||
-          item.category.attributes.label
-            .toLowerCase()
-            .includes(input.toLowerCase()) ||
-          item.summary.label.toLowerCase().includes(input.toLowerCase()) ||
-          item["im:artist"].label.toLowerCase().includes(input.toLowerCase())
-      );
-      setFilteredTopFreeAppList(newFilteredList);
-    } else {
-      setFilteredTopGrossingAppList(topGrossingAppList);
-    }
-  }, [input]);
-
-  // wait all api responses
-  React.useEffect(() => {
-    Promise.all([fetchTopFreeAppList(), fetchTopGrossingAppList()]);
-  }, []);
+  const debounceHandleInput = (input: string) => {
+    filterSearchInput(input, topGrossingAppList, wholeTopFreeAppList);
+    setInput(input);
+  };
 
   return (
     <View style={[styles.container]}>
       {fetchTopFeeAppListStatus && topFreeAppListStatus ? (
         <>
-          <SearchHeader {...{ input, setInput }} />
+          <SearchHeader {...{ input, setInput: debounceHandleInput }} />
           <AppListing
             topFreeAppList={filteredTopFreeAppList}
             recommendationData={filteredTopGrossingAppList}

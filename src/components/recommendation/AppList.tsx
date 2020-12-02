@@ -6,12 +6,8 @@ interface AppListProps {
 }
 
 const AppList: React.FC<AppListProps> = ({ recommendationData }) => {
-  const renderItem = ({ item, i }: any) => (
-    <AppItem
-      image={item["im:image"][2].label}
-      name={item["im:name"].label}
-      label={item["im:contentType"].attributes.label}
-    />
+  const renderItem = ({ item }: any) => (
+    <AppItem image={item.image} name={item.name} label={item.label} />
   );
   return (
     <View style={styles.container}>

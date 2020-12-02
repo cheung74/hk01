@@ -27,7 +27,7 @@ const SearchHeader: React.FC<Props> = ({ input, setInput }) => {
           <Feather name="search" size={16} color={color.textColor} />
           <TextInput
             ref={ref_input}
-            style={[{ fontSize: 16 }, { width: inActive ? "90%" : 30 }]}
+            style={[{ fontSize: 16 }, { width: inActive|| input ? "90%" : 40 }]}
             value={input}
             onChangeText={(text) => setInput(text)}
             onFocus={() => {
