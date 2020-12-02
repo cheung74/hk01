@@ -14,7 +14,7 @@ const ListItem: React.FC<Props> = ({ image, name, label, ranking, round }) => {
     <View style={styles.container}>
       <Text style={styles.rank}>{ranking}</Text>
       <Image
-        source={{ uri: image }}
+        source={{ uri: image, cache: 'force-cache' }}
         style={[styles.image, { borderRadius: round ? 30 : 16 }]}
       />
       <View style={styles.textContainer}>

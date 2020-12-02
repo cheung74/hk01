@@ -10,7 +10,7 @@ interface AppItemProps {
 const AppItem = ({ image, name, label }: AppItemProps) => {
   return (
     <View style={styles.container}>
-      <Image source={{ uri: image }} style={styles.image} />
+      <Image source={{ uri: image, cache: 'force-cache' }} style={styles.image} />
       <Text style={styles.name} numberOfLines={2}>
         {name}
       </Text>
