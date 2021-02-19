@@ -1,17 +1,16 @@
 import { AppItem } from "../../types";
 
-export const filterArr = (arr: AppItem[], text: string) => {
-  return arr.filter(
+export const filterArr = (arr: AppItem[], text: string) =>
+  arr.filter(
     (item) =>
       item.label.toLowerCase().includes(text) ||
       item.name.toLowerCase().includes(text) ||
       item.summary.toLowerCase().includes(text) ||
       item.author.toLowerCase().includes(text)
   );
-};
 
-export const mappingAppData = (arrData: any[]) => {
-  return arrData.map((item) => ({
+export const mappingAppData = (arrData: any[]) =>
+  arrData.map((item) => ({
     averageRating: item.averageUserRating,
     ratingCount: item.userRatingCount,
     image: item.artworkUrl100,
@@ -20,4 +19,3 @@ export const mappingAppData = (arrData: any[]) => {
     summary: item.description,
     author: item.sellerName,
   }));
-};

@@ -10,6 +10,7 @@ interface Props {
   round: boolean;
   averageRating: number;
   ratingCount: number;
+  isLast: boolean;
 }
 
 const ListItem: React.FC<Props> = ({
@@ -20,6 +21,7 @@ const ListItem: React.FC<Props> = ({
   round,
   averageRating,
   ratingCount,
+  isLast,
 }) => {
   const renderRantingIcon = (rating: number) => {
     const iconActiveState = [];
@@ -43,7 +45,7 @@ const ListItem: React.FC<Props> = ({
     );
   };
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { marginBottom: isLast ? 50 : 0 }]}>
       <Text style={styles.rank}>{ranking}</Text>
       <Image
         source={{ uri: image, cache: "force-cache" }}

@@ -16,7 +16,10 @@ const AppListing: React.FC<Props> = ({
   page,
   recommendationData,
 }) => {
-  const renderITem = ({ item, index }: any) => (
+  const appListLength = Array.isArray(topFreeAppList)
+    ? topFreeAppList.length
+    : 0;
+  const renderItem = ({ item, index }: any) => (
     <ListItem
       image={item.image}
       ranking={(index + 1).toString()}
@@ -25,13 +28,14 @@ const AppListing: React.FC<Props> = ({
       label={item.label}
       averageRating={item.averageRating}
       ratingCount={item.ratingCount}
-      />
+      isLast={appListLength - 1 === index}
+    />
   );
   return (
     <FlatList
       style={{ width: "100%" }}
       data={topFreeAppList}
-      renderItem={renderITem}
+      renderItem={renderItem}
       onEndReached={() => setPage(page + 1)}
       keyExtractor={(_, i) => i.toString()}
       ListHeaderComponent={() => <Recommendation {...{ recommendationData }} />}
