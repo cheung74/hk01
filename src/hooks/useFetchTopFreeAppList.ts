@@ -1,5 +1,6 @@
 import { AppItem } from "./../../types";
 import { useState, useEffect, useCallback } from "react";
+import { mappingAppData } from "../util/helper";
 
 export const useFetchTopFreeAppList = () => {
   const [filteredTopFreeAppList, setFilteredTopFreeAppList] = useState<
@@ -18,31 +19,17 @@ export const useFetchTopFreeAppList = () => {
       const {
         feed: { entry },
       } = await req.json();
-      const mergedArr: AppItem[] = await Promise.all(
-        entry.map(async (item: any) => {
-          const appId = item.id.attributes["im:id"];
-          const req = await fetch(
-            `https://itunes.apple.com/hk/lookup?id=${appId}`
-          );
-          const { results } = await req.json();
-          const averageRating = results[0].averageUserRating;
-          const ratingCount = results[0].userRatingCount;
-          const image = item["im:image"][2].label;
-          const name = item["im:name"].label;
-          const label = item.category.attributes.label;
-          const summary = item.summary.label;
-          const author = item["im:artist"].label;
-          return {
-            averageRating,
-            ratingCount,
-            image,
-            name,
-            label,
-            summary,
-            author,
-          };
-        })
+      const arr: any[] = [];
+
+      entry.map((item: any) => {
+        const appId = item.id.attributes["im:id"];
+        appId && arr.push(appId);
+      });
+      const appDataReq = await fetch(
+        `https://itunes.apple.com/hk/lookup?id=${arr}`
       );
+      const { results } = await appDataReq.json();
+      const mergedArr: AppItem[] = mappingAppData(results);
       const currentShownList = mergedArr.slice(0, 10);
       await setWholeTopFreeAppList(mergedArr);
       await setFilteredTopFreeAppList(currentShownList);

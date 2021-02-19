@@ -9,3 +9,15 @@ export const filterArr = (arr: AppItem[], text: string) => {
       item.author.toLowerCase().includes(text)
   );
 };
+
+export const mappingAppData = (arrData: any[]) => {
+  return arrData.map((item) => ({
+    averageRating: item.averageUserRating,
+    ratingCount: item.userRatingCount,
+    image: item.artworkUrl100,
+    name: item.trackCensoredName,
+    label: Array.isArray(item.genres) && item.genres[0],
+    summary: item.description,
+    author: item.sellerName,
+  }));
+};
