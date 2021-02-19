@@ -7,7 +7,6 @@ interface Props {
   name: string;
   label: string;
   ranking: string;
-  round: boolean;
   averageRating: number;
   ratingCount: number;
   isLast: boolean;
@@ -18,7 +17,6 @@ const ListItem: React.FC<Props> = ({
   name,
   label,
   ranking,
-  round,
   averageRating,
   ratingCount,
   isLast,
@@ -49,7 +47,7 @@ const ListItem: React.FC<Props> = ({
       <Text style={styles.rank}>{ranking}</Text>
       <Image
         source={{ uri: image, cache: "force-cache" }}
-        style={[styles.image, { borderRadius: round ? 30 : 16 }]}
+        style={styles.image}
       />
       <View style={styles.textContainer}>
         <Text style={styles.name} numberOfLines={1}>
@@ -89,6 +87,7 @@ const styles = StyleSheet.create({
     width: 60,
     height: 60,
     margin: 8,
+    borderRadius: 16,
   },
   rank: {
     fontSize: 16,

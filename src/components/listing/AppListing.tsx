@@ -23,7 +23,6 @@ const AppListing: React.FC<Props> = ({
     <ListItem
       image={item.image}
       ranking={(index + 1).toString()}
-      round={index % 2 ? true : false}
       name={item.name}
       label={item.label}
       averageRating={item.averageRating}
