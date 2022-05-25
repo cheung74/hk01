@@ -9,7 +9,7 @@ interface Props {
 const Recommendation: React.FC<Props> = ({ recommendationData }: Props) => {
   return (
     <View style={styles.container}>
-      <Text style={styles.text}>推介</Text>
+      <Text style={styles.text}>Recommendation</Text>
       {recommendationData && <AppList {...{ recommendationData }} />}
     </View>
   );

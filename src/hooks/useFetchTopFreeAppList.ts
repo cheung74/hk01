@@ -14,7 +14,7 @@ export const useFetchTopFreeAppList = () => {
   const fetchTopFreeAppList = useCallback(async () => {
     try {
       const req = await fetch(
-        "https://itunes.apple.com/hk/rss/topfreeapplications/limit=100/json"
+        "https://itunes.apple.com/ca/rss/topfreeapplications/limit=100/json"
       );
       const {
         feed: { entry },
@@ -26,7 +26,7 @@ export const useFetchTopFreeAppList = () => {
         appId && arr.push(appId);
       });
       const appDataReq = await fetch(
-        `https://itunes.apple.com/hk/lookup?id=${arr}`
+        `https://itunes.apple.com/ca/lookup?id=${arr}`
       );
       const { results } = await appDataReq.json();
       const mergedArr: AppItem[] = mappingAppData(results);

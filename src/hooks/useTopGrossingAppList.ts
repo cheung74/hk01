@@ -12,7 +12,7 @@ export const useTopGrossingAppList = () => {
   const fetchTopGrossingAppList = useCallback(async () => {
     try {
       const req = await fetch(
-        "https://itunes.apple.com/hk/rss/topgrossingapplications/limit=10/json"
+        "https://itunes.apple.com/ca/rss/topgrossingapplications/limit=10/json"
       );
       const {
         feed: { entry },
