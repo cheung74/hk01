@@ -29,7 +29,7 @@ const SearchHeader: React.FC<Props> = ({ input, setInput }) => {
             ref={ref_input}
             style={[
               { fontSize: 16 },
-              { width: inActive || input ? "90%" : 40 },
+              { width: inActive || input ? "90%" : 60 },
             ]}
             value={input}
             onChangeText={(text) => setInput(text)}
@@ -38,7 +38,7 @@ const SearchHeader: React.FC<Props> = ({ input, setInput }) => {
               setInput(input ? input : "");
             }}
             onBlur={() => setInActive(false)}
-            placeholder="搜尋"
+            placeholder="Search"
           />
         </View>
       </TouchableWithoutFeedback>
